@@ -35,6 +35,10 @@ Known Issues
 
 Update Log
 ------
+* v0.9.0 (8/4/2018) 
+  * Added ability to set tie breaker criteria in the options menu of this extension.
+* v0.8.0 (6/28/2018) 
+  * Made extension work for 2018 season
 * v0.7.0 (8/29/2017) 
   * Fixed bug: Hybrid standings were only showing after week 1 finished.
 * v0.6.3 (8/27/2017) 
@@ -66,3 +70,9 @@ Thanks
 ------
 * Thanks to Brett Woodward's [FantasyPlus](https://github.com/flipperbw/FantasyPlus) and Thomas Beutler's [FantasyTargets](https://github.com/tcbeutler/FantasyTargets) for providing me with inspiration to build this and give back to the Fantasy community.
 * Thanks to Danny Eliahu for the photoshop work and nice graphics!
+
+Donations
+------
+* BTC: 17Rr3TcvafC4yfBJ4mvqMDq8C1RQGeEfFD
+* ETH: 0xf6b1d2ed5282fa95a6e7e52b56f14b522a8d44c7
+* LTC: Lej1QW7xvBbomeKQdGAW2ATDG8PwpEtDz7
