@@ -71,7 +71,7 @@ function addPFToRecord(html ,record) {
     // make an array of just the text inside the <a> tags
     var teamNames = pointsForRows.prev().find('a').map(function(){return $(this).text();}).get();
     var teamNameIdx = teamNames.indexOf(record["teamName"]);
-	record['PF'] = parseFloat($(pointsForRows[teamNameIdx]).text());    // want to add pf inside the obj inside record
+    record['PF'] = parseFloat($(pointsForRows[teamNameIdx]).text());    // want to add pf inside the obj inside record
     return record;
 }
 
@@ -79,7 +79,7 @@ function getPercentage(results, numOfWeeks) {
     // calc % for results
     var percentage = (results['TOTAL W'] + (results['TOTAL T'] * 0.5)) / (2 * numOfWeeks);
     // if season hasn't began (numOfWeeks == 0) return 0
-    return  numOfWeeks == 0 ? 0 : percentage;   
+    return  numOfWeeks == 0 ? 0 : percentage;
 }
 
 function getTotalResults(H2HResults, pointsResults) {
@@ -128,7 +128,7 @@ function parseHTML(html, pointsResults) {
             scoreObjects[score].push(owner);
         }
         else {
-            scoreObjects[score] = [owner];   
+            scoreObjects[score] = [owner];
         }
     }
 
@@ -149,22 +149,20 @@ function parseHTML(html, pointsResults) {
 
     // adds results to pointresults
     var count = 1
+    var games = 2
     for (var scoreIdx = 0; scoreIdx < scoreObjectsKeys.length; scoreIdx++) {
         var owners = scoreObjects[scoreObjectsKeys[scoreIdx]];
         for (var ownerIdx = 0; ownerIdx < owners.length; ownerIdx++) {
-            if (count < allOwners.length/2) {
-                pointsResults[owners[ownerIdx]][0]++;  // increase owners wins by 1
+            if (count < allOwners.length/2 && count%2==0) {
+                games=games/2
+                pointsResults[owners[ownerIdx]][0]+=games;  // increase owners wins by 1
             }
             else if (count == allOwners.length/2) {
-                if (owners.length == 1) {
-                    pointsResults[owners[ownerIdx]][0]++;  // increase owners wins by 1
-                }
-                else {
-                    pointsResults[owners[ownerIdx]][2]++;  // increase owners ties by 1
-                }
+                pointsResults[owners[ownerIdx]][1]+=games;  // increase owners losses by 1
             }
-            else {
-                pointsResults[owners[ownerIdx]][1]++;  // increase owners losses by 1
+            else if (count >= allOwners.length/2 && count%2==0){
+                games=games*2
+                pointsResults[owners[ownerIdx]][1]+=games;  // increase owners losses by 1
             }
         }
         count += owners.length // increase the count by the number of people that had this score
@@ -174,7 +172,7 @@ function parseHTML(html, pointsResults) {
 
 function getPointsResults(numOfWeeks, rows, completionHandler) {
     var pointsResults = {};     // {'owner1':[W,L,T], 'owner2':[W,L,T], etc}
-    
+
     // if the season hasn't began parse week 1's scoreboard URL
     if (numOfWeeks == 0) {
         $.get(SCOREBOARD_URL+1, function(data) {
@@ -194,7 +192,7 @@ function getPointsResults(numOfWeeks, rows, completionHandler) {
             });
         }
     }
-    
+
 }
 
 function getNumOfWeeks(results) {
@@ -277,7 +275,7 @@ function updateFinalStandingsUI(recordsObj) {
 
 function updateScoreboardUI(recordsObj) {
     var teams = $('td.team');
-    
+
     for (var teamIdx = 0; teamIdx < teams.length; teamIdx++) {
         var owner = $(teams[teamIdx]).find('a').attr('title');
         var record = recordsObj['records'][owner];
@@ -315,7 +313,7 @@ function updateClubhouseUI(recordsObj) {
     var ownerRank = $('h4 em');
     var teamName = $('.team-name').text();
     teamName = teamName.slice(0,teamName.indexOf('('));
-    
+
     var owners = recordsObj['sortedOwners'];
     var idx;
     for (idx = 0; idx < owners.length; idx++) {
@@ -332,7 +330,7 @@ function updateClubhouseUI(recordsObj) {
 function updateScheduleUI(recordsObj) {
     var table = $($('.tableSubHead:not(.roundsHeaders')[0]).nextAll();
     var idx = 0;
-    while ($(table[idx]).find('nobr').length) { // check to see if it has a value in the RESULT column 
+    while ($(table[idx]).find('nobr').length) { // check to see if it has a value in the RESULT column
         row = $(table[idx]).children();
 
         var owner = $(row[3]).children().first().attr('title');
@@ -391,7 +389,7 @@ function updateStandingsUI(recordsObj, divisionIdx) {
             align: 'right',
             width:  COLUMN_WIDTH,
             title:  columnText
-        }); 
+        });
         return columnCell;
     }
 
@@ -415,7 +413,7 @@ function updateStandingsUI(recordsObj, divisionIdx) {
             }
             else if (idx == 11) { // format decimal
                 var percentage = record[COLUMN_HEADERS[idx]].toFixed(3); // calc % for results
-                $(row[idx]).text(percentage.toString().replace(/^0+/, ''));    // remove leading 0  
+                $(row[idx]).text(percentage.toString().replace(/^0+/, ''));    // remove leading 0
             }
             else if (idx == 12 && record[COLUMN_HEADERS[idx]] == 0) {   // if 0 GB replace with '--'
                 $(row[idx]).text('--');
